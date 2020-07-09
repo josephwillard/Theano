@@ -186,7 +186,6 @@ test_rng = np.random.RandomState(seed=utt.fetch_seed())
 # test_rng = MockRandomState(0.99999982)
 # test_rng = MockRandomState(1)
 
-
 def inplace_func(
     inputs,
     outputs,
@@ -2873,6 +2872,14 @@ class TestAlloc:
             zeros_tensor = theano.function([x], [tensor.zeros(x.shape)], mode=self.mode)
             inp = np.zeros(shp, dtype=config.floatX)
             assert np.allclose(zeros_tensor(inp), np.zeros(shp))
+
+
+def test_check_equal_numpy():
+
+    assert theano.tensor.check_equal_numpy(1, 1)
+    assert theano.tensor.check_equal_numpy(np.array(1), np.array(1))
+    assert theano.tensor.check_equal_numpy(np.random.RandomState(),
+                                           np.random.RandomState())
 
 
 # This is slow for the ('int8', 3) version.
